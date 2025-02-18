@@ -1,0 +1,14 @@
+@import './base.css';
+
+#app {
+  font-weight: normal;
+}
+
+.site-header {
+  background-color: #dce2e8;
+  padding: 1rem;
+  width: 100vw;
+  min-height: 30vh;
+  display: flex;
+  align-items: center;
+}
