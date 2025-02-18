@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import SearchInput from '@/components/SearchInput.vue'
+import { onMounted } from 'vue';
 
-const handleSearchInput = (searchText: string) => {
-  console.log(searchText)
-}
+onMounted(() => {
+  document.title = 'Cowrywise Dev Test || By Divine Ahaka'
+})
 </script>
 
 <template>

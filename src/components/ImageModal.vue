@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { decode } from 'blurhash'
 import UnsplashImageResult from '@/types/UnsplashImageResult'
 import XMark from './icons/XMark.vue'
+import useBlurHash from '@/composables/useBlurHash'
 
 const emits = defineEmits(['close-modal'])
 
@@ -11,29 +12,11 @@ const props = defineProps<{ photo: UnsplashImageResult }>()
 const blurDataUrl = ref<string | null>(null)
 const imageLoaded = ref(false)
 
-// Function to decode blurhash into a base64 image
-const generateBlurImage = () => {
-  if (!props.photo.blur_hash) return
+const { generateBlurHash } = useBlurHash()
 
-  const width = 32
-  const height = 32
-  const pixels = decode(props.photo.blur_hash, width, height)
-
-  // Convert the decoded pixels into an ImageData object
-  const canvas = document.createElement('canvas')
-  canvas.width = width
-  canvas.height = height
-  const ctx = canvas.getContext('2d')
-
-  if (ctx) {
-    const imageData = ctx.createImageData(width, height)
-    imageData.data.set(new Uint8ClampedArray(pixels))
-    ctx.putImageData(imageData, 0, 0)
-    blurDataUrl.value = canvas.toDataURL()
-  }
-}
-
-onMounted(generateBlurImage)
+onMounted(() => {
+  blurDataUrl.value = generateBlurHash(props.photo) as string
+})
 </script>
 
 <template>

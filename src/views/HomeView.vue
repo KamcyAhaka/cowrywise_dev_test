@@ -7,6 +7,7 @@ import { onMounted, ref } from 'vue'
 import MagnifyingGlass from '@/components/icons/MagnifyingGlass.vue'
 import ImageModal from '@/components/ImageModal.vue'
 import UnsplashImageResult from '@/types/UnsplashImageResult'
+import CardImage from '@/components/CardImage.vue'
 
 const unsplash = useUnsplash()
 const unsplashStore = useUnsplashStore()
@@ -74,7 +75,7 @@ const openModal = (image: UnsplashImageResult) => {
           :class="{ tall: isMiddleItem(index) }"
           @click="openModal(image)"
         >
-          <img :src="image.urls.thumb" alt="" />
+          <CardImage :image="image" />
           <div class="overlay">
             <h2>{{ image.user.name }}</h2>
             <span>{{ image.user.location }}</span>
@@ -182,11 +183,6 @@ h1 {
       }
     }
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
 
     &.tall {
       grid-row: span 8;
