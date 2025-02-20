@@ -16,6 +16,8 @@ const showInput = ref(true)
 const searchTerm = ref('')
 const showModal = ref(false)
 
+const resultText = ref()
+
 const selectedPhoto = ref<UnsplashImageResult>()
 
 onMounted(async () => {
@@ -33,6 +35,7 @@ const handleSearchInput = async (searchText: string) => {
   showInput.value = false
   const data = await unsplash.searchPhotos(searchText)
   isLoading.value = false
+  resultText.value = searchText
   unsplashStore.photos = data.results
 }
 
@@ -58,7 +61,11 @@ const openModal = (image: UnsplashImageResult) => {
     </template>
   </header>
   <main>
-    <div class="image-grid-container">
+    <template v-if="unsplashStore.photos.length === 0 && !isLoading">
+      <h2 class="no-result-text">No results found for <span>"{{ resultText }}"</span></h2>
+    </template>
+
+    <div class="image-grid-container" v-else>
       <template v-if="isLoading">
         <SkeletonLoader
           class="image-grid-item"
@@ -94,6 +101,21 @@ const openModal = (image: UnsplashImageResult) => {
 </template>
 
 <style scoped lang="scss">
+.no-result-text {
+  color: #23345c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 4em;
+  gap: .25em;
+  font-weight: bold;
+
+  @media screen and (min-width: 1024px) {
+    font-size: clamp(1.25rem, 1.5rem + 1vw, 3rem);
+  }
+}
+
 h1 {
   color: #23345c;
   font-weight: bold;
